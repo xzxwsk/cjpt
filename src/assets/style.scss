@@ -1,0 +1,194 @@
+$themeColor: #009e9e;
+
+html, body, #app{ height: 100%; }
+body{
+  margin: 0 auto; overflow-y: hidden; font-family: "Microsoft YaHei"; background: #f1f3f7;
+}
+
+::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
+  background-color:#f8f8f8;
+}
+::-webkit-scrollbar {//滚动条的宽度
+  width:6px;
+  height:5px
+}
+::-webkit-scrollbar-track {
+  background-color:red;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
+}
+::-webkit-scrollbar-thumb {//滚动条的设置
+  background-color:#dddddd;
+  background-clip:padding-box;
+  min-height:28px;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color:#bbb;
+}
+
+.b{
+    font-weight: bold
+}
+.mgl10{
+    margin-left:10px !important;
+}
+.mgb0{
+    margin-bottom:0 !important;
+}
+.mgb20{
+    margin-bottom:20px !important;
+}
+
+.link, .link:hover{
+  color: $themeColor; cursor: pointer; text-decoration: underline;
+}
+.pagination{
+  display: flex; flex-direction: row; justify-content: flex-end; padding: 10px 20px;
+}
+
+.el-header{
+  padding-left: 0; padding-right: 0;
+}
+.el-dialog__wrapper{
+  display: flex; flex-direction: column; justify-content: center;
+}
+.el-button--primary {
+  background: $themeColor; border-color: $themeColor;
+  &:focus, &:hover {
+    background: $themeColor; border-color: $themeColor;
+  }
+}
+.el-pager{
+  li.active, li:hover{color: $themeColor;}
+}
+.el-button{
+  &.el-button--default {
+    &:focus, &:hover {
+      color: $themeColor;
+      border-color: #cdf8f8;
+      background-color: #eafcfc;
+    }
+  }
+}
+.el-input{
+  &.is-active .el-input__inner, .el-input__inner:focus{
+    border-color: $themeColor
+  }
+}
+.el-select{
+  .el-input{
+    &.is-focus .el-input__inner{
+      border-color: $themeColor
+    }
+  }
+}
+.el-form-item.is-success{
+  .el-input__inner,
+  .el-input__inner:focus,
+  .el-textarea__inner,
+  .el-textarea__inner:focus{
+    border-color: $themeColor
+  }
+}
+
+.main-box{
+  display: flex; flex-direction: column; height: 100%;
+  .main-down{
+    flex: 1;
+  }
+}
+
+.main{
+  height: 100%;
+  .main-con{
+    display: flex; flex-direction: column; height: 100%;
+    .box-card{
+      flex: 1; margin: 0 20px 20px; display: flex; flex-direction: column;
+      .el-card__body{
+        flex: 1; padding-bottom: 0;
+      }
+    }
+    .form_field_card{margin: 0 0 20px;
+      .el-card__header{
+          padding: 5px 20px;
+      }
+    }
+  }
+}
+
+.menu {
+  float: left; width: 220px; overflow-y: auto; background: rgb(84, 92, 100);
+  .el-menu{
+    border: none;
+  }
+  .fa{
+    display: inline-block; width: 40px; font-size: 25px; text-align: center;
+  }
+}
+
+.select-box{
+  .el-icon-circle-plus{
+    display: inline-block; font-size: 20px; vertical-align: middle;
+  }
+  .el-button{
+    padding: 9px 20px;
+    span{
+      display: inline-block; vertical-align: middle;
+    }
+  }
+}
+
+.modify-rule{
+    .prompt{
+        margin-top: 0; margin-left: 40px; color: #999;
+    }
+    .el-dialog__body{
+        padding-top: 0;
+    }
+}
+
+.el-table{
+    tr{
+        &.warning-row{
+            background: oldlace;
+        }
+    }
+}
+
+.search{display: flex; flex-direction: row; padding: 20px;
+    .select-box {padding: 0 20px 0 0; width: 600px;
+        .el-select{width: 100%;}
+    }
+    .search-btn{flex: 1;}
+}
+.table-con{
+    height: 100%;
+}
+.sort_btn{
+    span{display: inline-block; margin:0 5px; width: 15px; text-align: center; color: #009e9e;
+        b{display: block; cursor: pointer;}
+    }
+}
+.fa-edit{
+    margin-top: 8px; font-size: 22px; color: #048992; cursor: pointer;
+}
+
+.el-transfer-panel__filter{
+    margin-top: 0; margin-bottom: 0;
+}
+
+.radio_group{display: flex; flex-direction: row; flex-wrap: wrap; width: 100%;
+    .el-radio{margin: 0 10px 10px 0; line-height: 20px;}
+}
+.check_group{
+    .el-form-item__content{display: flex; flex-direction: row; flex-wrap: wrap;}
+    .el-checkbox{margin: 0 10px 10px 0; line-height: 20px;}
+}
+
+.pop_content{
+    max-height: 550px; overflow-y: auto; overflow-x: hidden;
+}
