@@ -74,9 +74,9 @@
                         <template slot-scope="scope">
                             <div slot="reference">
                                 <span class="order-prompt" @click="zongliangjiajia(scope.row)">重量加价</span>、
-                                <span class="order-prompt" @click="yejianjiajia(scope.row)">夜间加价</span>、
-                                <span class="order-prompt" @click="teshujiajia(scope.row)">特殊加价</span>、
-                                <span class="order-prompt" @click="julijiajia(scope.row)">距离加价</span>
+                                <span class="order-prompt" @click="julijiajia(scope.row)">距离加价</span>、
+                                <span class="order-prompt" @click="yejianjiajia(scope.row)">时间加价</span>、
+                                <span class="order-prompt" @click="teshujiajia(scope.row)">特殊加价</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -1220,12 +1220,12 @@ export default {
             let param = {
                 serviceCategoryProviderId: this.formDataPop.selectServiceTypeValue,
                 displayName: this.formDataPop.displayName,
-                priceType: this.formDataPop.priceType,
-                priceAmount: this.formDataPop.priceAmount,
+                priceType: this.formDataPop.priceTypeTs,
+                priceAmount: this.formDataPop.priceAmountTs,
                 recordStatus: 1
             }
-            $http2({
-                url: '/scProviderTimeRuleUpdate',
+            $http({
+                url: '/scProviderSpecialRuleUpdate',
                 data: param
             }).then(res => {
                 if (res.code === 400) {

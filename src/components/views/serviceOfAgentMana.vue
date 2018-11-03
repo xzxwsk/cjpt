@@ -224,12 +224,12 @@ export default {
                 param.paramName = searchKey
             }
             $http({
-                url: '/agent/getServiceCategoryByProviderId',
+                url: '/agent/getServiceCategoryProvider',
                 data: param
             }).then(res => {
                 if (res.code === 400) {
-                    this.tableData = res.data
-                    this.total = res.data.length
+                    this.tableData = res.data.list
+                    this.total = res.data.total
                 } else {
                     console.log('未查询到相关服务商')
                     this.tableData = []

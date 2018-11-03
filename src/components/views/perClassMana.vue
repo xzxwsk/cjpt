@@ -31,6 +31,11 @@
                         label="服务商用户名">
                     </el-table-column>
                     <el-table-column
+                            min-width="120"
+                            prop="categoryName"
+                            label="服务名">
+                    </el-table-column>
+                    <el-table-column
                         min-width="120"
                         prop="platformRate"
                         label="平台分成比例">
@@ -113,75 +118,77 @@
             top="0">
             <div>
                 <el-form :model="formDataPop" label-width="120px">
-                    <el-form-item label="">
-                        <el-radio-group v-model="formDataPop.selectType">
-                            <el-radio label="0">服务商</el-radio>
-                            <el-radio label="1">服务</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <div v-if="formDataPop.selectType === '0'">
-                        <el-form-item label="服务商">
-                            <el-select v-model="formDataPop.serviceCategoryProviderId" remote :remote-method="getAgentLs" @change="getServicesForAgent"
-                                filterable
-                                placeholder="请选择服务商">
-                                <el-option
-                                    v-for="item in serviceAgentOptions"
-                                    :key="item.id"
-                                    :label="item.realName"
-                                    :value="item.providerId">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                    <div v-if="popTitle !== '修改'">
                         <el-form-item label="">
-                            <el-select v-model="formDataPop.serviceCategoryId" placeholder="请选择服务">
-                                <el-option
-                                    v-for="item in servicesOptions"
-                                    :key="item.id"
-                                    :label="item.realName"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                            <!--
-                            列表形式
-                            <div class="services_ls_box">
-                                <div class="services_ls">
-                                    <el-transfer :titles="serviceLsTitles" v-model="formDataPop.serviceCategoryId" :data="servicesOptions"
-                                        :props="{
-                                            key: 'id',
-                                            label: 'categoryName'
-                                        }">
-                                    </el-transfer>
+                            <el-radio-group v-model="formDataPop.selectType">
+                                <el-radio label="0">服务商</el-radio>
+                                <el-radio label="1">服务</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <div v-if="formDataPop.selectType === '0'">
+                            <el-form-item label="服务商">
+                                <el-select v-model="formDataPop.serviceCategoryProviderId" remote :remote-method="getAgentLs" @change="getServicesForAgent"
+                                    filterable
+                                    placeholder="请选择服务商">
+                                    <el-option
+                                        v-for="item in serviceAgentOptions"
+                                        :key="item.id"
+                                        :label="item.realName"
+                                        :value="item.providerId">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="">
+                                <el-select v-model="formDataPop.serviceCategoryId" placeholder="请选择服务">
+                                    <el-option
+                                        v-for="item in servicesOptions"
+                                        :key="item.id"
+                                        :label="item.realName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                                <!--
+                                列表形式
+                                <div class="services_ls_box">
+                                    <div class="services_ls">
+                                        <el-transfer :titles="serviceLsTitles" v-model="formDataPop.serviceCategoryId" :data="servicesOptions"
+                                            :props="{
+                                                key: 'id',
+                                                label: 'categoryName'
+                                            }">
+                                        </el-transfer>
+                                    </div>
                                 </div>
-                            </div>
-                            -->
-                        </el-form-item>
-                    </div>
+                                -->
+                            </el-form-item>
+                        </div>
 
-                    <div v-else>
-                        <el-form-item label="服务">
-                            <el-select v-model="formDataPop.serviceCategoryId2" @change="getAgentForServices" clearable
-                                       filterable
-                                       placeholder="请选择服务">
-                                <el-option
-                                    v-for="item in servicesOptions2"
-                                    :key="item.id"
-                                    :label="item.categoryName"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="">
-                            <el-select v-model="formDataPop.serviceCategoryProviderId2"
-                                       filterable
-                                       placeholder="请选择服务商">
-                                <el-option
-                                    v-for="item in serviceAgentOptions2"
-                                    :key="item.id"
-                                    :label="item.realName"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                        <div v-else>
+                            <el-form-item label="服务">
+                                <el-select v-model="formDataPop.serviceCategoryId2" @change="getAgentForServices" clearable
+                                           filterable
+                                           placeholder="请选择服务">
+                                    <el-option
+                                        v-for="item in servicesOptions2"
+                                        :key="item.id"
+                                        :label="item.categoryName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="">
+                                <el-select v-model="formDataPop.serviceCategoryProviderId2"
+                                           filterable
+                                           placeholder="请选择服务商">
+                                    <el-option
+                                        v-for="item in serviceAgentOptions2"
+                                        :key="item.id"
+                                        :label="item.realName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
                     </div>
                     <el-form-item label="平台分成比例">
                         <el-input v-model="formDataPop.platformRate" placeholder="请输入平台分成比例"></el-input>
@@ -391,9 +398,6 @@ export default {
             this.popTitle = '修改'
             this.formDataPop = deepClone(row)
             console.log(JSON.stringify(row))
-            this.formDataPop = {
-                selectType: '0'
-            }
             // 获取弹窗可选项
             this.getServiceLs()
             this.dialogVisible = true
