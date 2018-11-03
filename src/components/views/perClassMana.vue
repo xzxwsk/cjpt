@@ -159,12 +159,13 @@
 
                     <div v-else>
                         <el-form-item label="服务">
-                            <el-select v-model="formDataPop.serviceCategoryId2" @change="getAgentForServices"
+                            <el-select v-model="formDataPop.serviceCategoryId2" @change="getAgentForServices" clearable
+                                       filterable
                                        placeholder="请选择服务">
                                 <el-option
                                     v-for="item in servicesOptions2"
                                     :key="item.id"
-                                    :label="item.realName"
+                                    :label="item.categoryName"
                                     :value="item.id">
                                 </el-option>
                             </el-select>
@@ -177,7 +178,7 @@
                                     v-for="item in serviceAgentOptions2"
                                     :key="item.id"
                                     :label="item.realName"
-                                    :value="item.providerId">
+                                    :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -294,7 +295,8 @@ export default {
             $http({
                 url: '/agent/getServiceCategoryProvider',
                 data: {
-                    paramName: _searchKey
+                    paramName: _searchKey,
+                    pageSize: 100
                 }
             }).then(res => {
                 if (res.code === 400) {
@@ -319,9 +321,10 @@ export default {
                 _searchKey = searchKey
             }
             $http({
-                url: '/agent/getServiceCategoryProvider',
+                url: '/getServiceCategory',
                 data: {
-                    paramName: _searchKey
+                    categoryName: _searchKey,
+                    pageSize: 100
                 }
             }).then(res => {
                 console.log('服务：', res)
@@ -349,18 +352,19 @@ export default {
                     this.servicesFlag = true
                     this.servicesOptions = res.data.list
                 } else {
-                    console.log('未查询到相关服务商')
+                    console.log('未查询到相关服务')
                 }
             }).catch(err => {
                 console.log(err)
             })
         },
         // 根据服务获取服务商
-        getAgentForServices (id) {
+        getAgentForServices (serviceCategoryId) {
             $http({
                 url: '/agent/getServiceCategoryProvider',
                 data: {
-                    serviceCategoryId: id
+                    serviceCategoryId: serviceCategoryId,
+                    pageSize: 100
                 }
             }).then(res => {
                 if (res.code === 400) {
@@ -396,15 +400,28 @@ export default {
         },
         // 添加、修改弹窗确认按钮
         confirmBtn () {
-            $http({
-                url: '/scProviderDivideUpdate',
-                data: {
+            let param = {}
+            if (this.formDataPop.selectType === '0') {
+                param = {
                     serviceCategoryProviderId: this.formDataPop.serviceCategoryId,
                     platformRate: this.formDataPop.platformRate,
                     runnerRate: this.formDataPop.runnerRate,
                     providerRate: this.formDataPop.providerRate,
                     comment: this.formDataPop.comment
                 }
+            } else {
+                param = {
+                    serviceCategoryProviderId: this.formDataPop.serviceCategoryProviderId2,
+                    platformRate: this.formDataPop.platformRate,
+                    runnerRate: this.formDataPop.runnerRate,
+                    providerRate: this.formDataPop.providerRate,
+                    comment: this.formDataPop.comment
+                }
+            }
+
+            $http({
+                url: '/scProviderDivideUpdate',
+                data: param
             }).then(res => {
                 console.log(res)
                 this.dialogVisible = false
