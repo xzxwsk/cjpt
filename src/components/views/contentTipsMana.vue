@@ -36,9 +36,17 @@
                         label="内容标题">
                     </el-table-column>
                     <el-table-column
-                        min-width="120"
-                        prop="contentTips"
+                        min-width="200"
                         label="内容提示">
+                        <template slot-scope="scope">
+                            <el-popover
+                                placement="bottom"
+                                title=""
+                                trigger="hover"
+                                :content="scope.row.contentTips">
+                                <span class="order-prompt" slot="reference">{{scope.row.contentTips.substr(0, 15)}}</span>
+                            </el-popover>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         width="200"

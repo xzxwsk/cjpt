@@ -318,17 +318,17 @@ export default {
                 console.log(err)
             })
         },
-        // 选择服务类型 获取服务
+        // 选择服务类型 获取服务商
         getServicesForType (val) {
             this.formDataPop.serviceCategoryIds = val
             $http({
-                url: '/agent/getServiceCategoryProvider',
+                url: '/agent/getServiceCategoryByProviderId',
                 data: {
                     serviceCategoryId: val
                 }
             }).then(res => {
                 if (res.code === 400) {
-                    this.selectAgentOptions = res.data.list
+                    this.selectAgentOptions = res.data
                 } else if (res.msg) {
                     this.selectAgentOptions = []
                     this.$message({
@@ -341,6 +341,12 @@ export default {
                 console.log(err)
             })
         },
+        // 过滤服务商
+        // searchAgent (query, item) {
+        //     console.log(query, item)
+        //     return item.realName.indexOf(query) !== -1 || item.categoryName.indexOf(query) !== -1
+        // },
+
         // 选择服务 获取服务商
         getAgentForServices (val) {
 

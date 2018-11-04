@@ -318,8 +318,8 @@ export default {
             }).then(res => {
                 if (res.code === 400) {
                     this.serviceTypeOptions = res.data.list
-                    this.searchServiceType = this.serviceTypeOptions[0].id
-                    this.getData(1, this.searchServiceType)
+                    // this.searchServiceType = this.serviceTypeOptions[0].id
+                    this.getData(1)
                 } else {
                     this.serviceTypeOptions = []
                     console.log('未查询到相关服务类型')

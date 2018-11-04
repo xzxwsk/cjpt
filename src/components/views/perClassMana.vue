@@ -127,6 +127,17 @@
                         </el-form-item>
                         <div v-if="formDataPop.selectType === '0'">
                             <el-form-item label="服务商">
+                                <!--<div class="services_ls_box">
+                                    <div class="services_ls">
+                                        <el-transfer :titles="agentLsTitles" :data="serviceAgentOptions" @left-check-change="getServicesForAgent"
+                                             filterable
+                                             :props="{
+                                                key: 'id',
+                                                label: 'realName'
+                                             }">
+                                        </el-transfer>
+                                    </div>
+                                </div>-->
                                 <el-select v-model="formDataPop.serviceCategoryProviderId" remote :remote-method="getAgentLs" @change="getServicesForAgent"
                                     filterable
                                     placeholder="请选择服务商">
@@ -143,7 +154,7 @@
                                     <el-option
                                         v-for="item in servicesOptions"
                                         :key="item.id"
-                                        :label="item.realName"
+                                        :label="item.categoryName"
                                         :value="item.id">
                                     </el-option>
                                 </el-select>
@@ -237,6 +248,7 @@ export default {
             servicesOptions2: [],
             servicesFlag: false,
             servicesFlag2: false,
+            agentLsTitles: ['选择服务商'],
             // serviceLsTitles: ['服务'],
             dialogVisible: false
         }
@@ -300,7 +312,7 @@ export default {
                 _searchKey = searchKey
             }
             $http({
-                url: '/agent/getServiceCategoryProvider',
+                url: '/agent/getServiceCategoryByProviderId',
                 data: {
                     paramName: _searchKey,
                     pageSize: 100
@@ -308,7 +320,7 @@ export default {
             }).then(res => {
                 if (res.code === 400) {
                     this.serviceAgentFlag = true
-                    this.serviceAgentOptions = res.data.list
+                    this.serviceAgentOptions = res.data
                 } else {
                     this.serviceAgentOptions = []
                     console.log('未查询到相关服务商')
@@ -422,6 +434,9 @@ export default {
                     comment: this.formDataPop.comment
                 }
             }
+            if (this.popTitle === '修改') {
+                param.id = this.formDataPop.id
+            }
 
             $http({
                 url: '/scProviderDivideUpdate',
@@ -511,11 +526,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-/*
 .services_ls_box{width: 200px; overflow: hidden;
     .services_ls{
         width: 1000px;
     }
 }
-*/
 </style>
