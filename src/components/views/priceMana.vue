@@ -53,7 +53,7 @@
                     <el-table-column
                         min-width="120"
                         prop="categoryName"
-                        label="二级服务">
+                        label="服务">
                     </el-table-column>
                     <el-table-column
                         min-width="120"
@@ -90,11 +90,11 @@
                 </el-table>
                 <div class="pagination" v-if="total>0">
                     <el-pagination
-                            :current-page="currentPage"
-                            :page-size="pageSize"
-                            layout="total, prev, pager, next, jumper"
-                            @current-change="getData"
-                            :total="total">
+                        :current-page="currentPage"
+                        :page-size="pageSize"
+                        layout="total, prev, pager, next, jumper"
+                        @current-change="getData"
+                        :total="total">
                     </el-pagination>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                             <el-form-item v-for="priceItem in priceType" :label="priceItem.displayName" :key="priceItem.id">
                                 <el-row :gutter="20">
                                     <el-col :span="18">
-                                        <el-input v-model="priceItem.priceValue" type="number" placeholder="请输入金额"></el-input>
+                                        <el-input v-model="priceItem.providerPrice" type="number" placeholder="请输入金额"></el-input>
                                     </el-col>
                                     <el-col :span="5">元</el-col>
                                 </el-row>
@@ -296,7 +296,7 @@
                                                 label="类型">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceTypeJl === 0 ? '固定值' : '比例'}}
+                                                        {{scope.row.priceType === 0 ? '固定值' : '比例'}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -305,7 +305,7 @@
                                                 label="数值">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceAmount + (scope.row.priceTypeJl === 0 ? '元' : '%')}}
+                                                        {{scope.row.priceAmount + (scope.row.priceType === 0 ? '元' : '%')}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -372,7 +372,7 @@
                                                 label="类型">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceTypeYj === 0 ? '固定值' : '比例'}}
+                                                        {{scope.row.priceType === 0 ? '固定值' : '比例'}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -381,7 +381,7 @@
                                                 label="数值">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceAmount + (scope.row.priceTypeYj === 0 ? '元' : '%')}}
+                                                        {{scope.row.priceAmount + (scope.row.priceType === 0 ? '元' : '%')}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -435,7 +435,7 @@
                                                 label="类型">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceTypeTs === 0 ? '固定值' : '比例'}}
+                                                        {{scope.row.priceType === 0 ? '固定值' : '比例'}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -444,7 +444,7 @@
                                                 label="数值">
                                                 <template slot-scope="scope">
                                                     <div slot="reference">
-                                                        {{scope.row.priceAmount + (scope.row.priceTypeTs === 0 ? '元' : '%')}}
+                                                        {{scope.row.priceAmount + (scope.row.priceType === 0 ? '元' : '%')}}
                                                     </div>
                                                 </template>
                                             </el-table-column>
@@ -864,8 +864,10 @@ export default {
     },
     created () {
         this.$nextTick(() => {
-            let h = this.$refs.tableCon.offsetHeight
-            this.tableHeight = h - 52
+            // let h = this.$refs.tableCon.offsetHeight
+            // this.tableHeight = h - 52
+            let h = document.body.clientHeight
+            this.tableHeight = h - 85 - 80 - 58 - 40 - 55
             this.getData(1)
             this.getArea(0)
         })
@@ -906,6 +908,7 @@ export default {
             }).then(res => {
                 if (res.code === 400) {
                     this.tableData = res.data.list
+                    console.log(this.tableData)
                     this.total = res.data.total
                 } else {
                     console.log('未查询到相关服务商')
@@ -1087,15 +1090,15 @@ export default {
                 id = val
             }
             // 获取收费类型
-            $http2({
-                url: '/getServiceCategoryPriceByCategoryId',
+            $http({
+                url: '/agent/getScProviderPriceByScpPId',
                 data: {
-                    serviceCategoryId: serviceCategory[0].serviceCategoryId
+                    serviceCategoryProviderId: id
                 }
             }).then(res => {
                 console.log('收费类型：', res)
                 if (res.code === 400) {
-                    this.priceType = res.data.list
+                    this.priceType = res.data
                 } else if (res.msg) {
                     this.$message({
                         message: res.msg,
@@ -1116,15 +1119,17 @@ export default {
         },
         // 保存收费类型
         savePriceType () {
-            let scProviderPriceVos = []
+            // let scProviderPriceVos = []
             this.priceType.forEach(item => {
-                if (item.priceValue !== undefined && item.priceValue !== '') {
-                    scProviderPriceVos.push({
-                        id: this.formDataPop.id,
-                        providerPrice: item.priceValue,
-                        serviceCategoryPriceId: item.id,
-                        serviceCategoryProviderId: this.formDataPop.serviceCategoryId
-                    })
+                if (item.providerPrice !== undefined && item.providerPrice !== '') {
+                    // scProviderPriceVos.push({
+                    //     id: this.formDataPop.id,
+                    //     providerPrice: item.priceValue,
+                    //     serviceCategoryPriceId: item.id,
+                    //     serviceCategoryProviderId: this.formDataPop.serviceCategoryId
+                    // })
+                } else {
+                    item.providerPrice = 0
                 }
             })
             // console.log(scProviderPriceVos)
@@ -1132,7 +1137,7 @@ export default {
             $http2({
                 url: '/agent/scProviderPriceUpdate',
                 data: {
-                    scProviderPriceVos: scProviderPriceVos
+                    scProviderPriceVos: this.priceType
                 }
             }).then(res => {
                 if (res.code === 400) {
@@ -1140,6 +1145,8 @@ export default {
                         message: res.msg,
                         type: 'success'
                     })
+                    this.dialogVisible = false
+                    this.searchFun()
                 } else if (res.msg) {
                     this.$message({
                         message: res.msg,
@@ -1156,6 +1163,13 @@ export default {
         },
         // 保存重量加价
         saveAddPriceTypeZl () {
+            if (!this.formDataPop.selectServiceTypeValue) {
+                this.$message({
+                    message: '请选择服务',
+                    type: 'warning'
+                })
+                return
+            }
             let param = {
                 serviceCategoryProviderId: this.formDataPop.selectServiceTypeValue,
                 startWeight: this.formDataPop.startWeight,
@@ -1164,7 +1178,7 @@ export default {
                 priceAmount: this.formDataPop.priceAmount,
                 recordStatus: 1
             }
-            $http2({
+            $http({
                 url: '/scProviderWeightRuleUpdate',
                 data: param
             }).then(res => {
@@ -1182,15 +1196,22 @@ export default {
         },
         // 保存加价距离
         saveAddPriceTypeJl () {
+            if (!this.formDataPop.selectServiceTypeValue) {
+                this.$message({
+                    message: '请选择服务',
+                    type: 'warning'
+                })
+                return
+            }
             let param = {
                 serviceCategoryProviderId: this.formDataPop.selectServiceTypeValue,
                 startDistance: this.formDataPop.startDistance,
                 endDistance: this.formDataPop.endDistance,
-                priceType: this.formDataPop.priceType,
-                priceAmount: this.formDataPop.priceAmount,
+                priceType: this.formDataPop.priceTypeJl,
+                priceAmount: this.formDataPop.priceAmountJl,
                 recordStatus: 1
             }
-            $http2({
+            $http({
                 url: '/scProviderDistanceRuleUpdate',
                 data: param
             }).then(res => {
@@ -1209,15 +1230,22 @@ export default {
         },
         // 保存夜间加价
         saveAddPriceTypeYj () {
+            if (!this.formDataPop.selectServiceTypeValue) {
+                this.$message({
+                    message: '请选择服务',
+                    type: 'warning'
+                })
+                return
+            }
             let param = {
                 serviceCategoryProviderId: this.formDataPop.selectServiceTypeValue,
                 startTime: this.formDataPop.startTime,
                 endTime: this.formDataPop.endTime,
-                priceType: this.formDataPop.priceType,
-                priceAmount: this.formDataPop.priceAmount,
+                priceType: this.formDataPop.priceTypeYj,
+                priceAmount: this.formDataPop.priceAmountYj,
                 recordStatus: 1
             }
-            $http2({
+            $http({
                 url: '/scProviderTimeRuleUpdate',
                 data: param
             }).then(res => {
@@ -1236,6 +1264,13 @@ export default {
         },
         // 保存特殊加价
         saveAddPriceTypeTs () {
+            if (!this.formDataPop.selectServiceTypeValue) {
+                this.$message({
+                    message: '请选择服务',
+                    type: 'warning'
+                })
+                return
+            }
             let param = {
                 serviceCategoryProviderId: this.formDataPop.selectServiceTypeValue,
                 displayName: this.formDataPop.displayName,
