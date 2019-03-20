@@ -173,8 +173,14 @@ body{
         b{display: block; cursor: pointer;}
     }
 }
+.fa{
+    cursor: pointer;
+}
 .fa-edit{
     margin-top: 8px; font-size: 22px; color: #048992; cursor: pointer;
+}
+.el-dialog{
+    .fa-edit{font-size: 14px;}
 }
 
 .el-transfer-panel__filter{

@@ -220,10 +220,11 @@ export default {
                 if (res.code === 400) {
                     this.servicesOptions = res.data
                 } else if (res.msg) {
-                    this.$message({
-                        message: res.msg,
-                        type: 'warning'
-                    })
+                    // this.$message({
+                    //     message: res.msg,
+                    //     type: 'warning'
+                    // })
+                    this.servicesOptions = []
                 }
             }).catch(err => {
                 console.log(err)
@@ -240,10 +241,11 @@ export default {
                 if (res.code === 400) {
                     this.selectBicycleOptions = res.data
                 } else if (res.msg) {
-                    this.$message({
-                        message: res.msg,
-                        type: 'warning'
-                    })
+                    // this.$message({
+                    //     message: res.msg,
+                    //     type: 'warning'
+                    // })
+                    this.selectBicycleOptions = []
                 }
             }).catch(err => {
                 console.log(err)
